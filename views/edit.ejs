@@ -1,0 +1,45 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+    <h1>Edit the list</h1>
+    <div class="row">
+        <div class="col-9 offset-2">
+            <form method="POST" action="/listing/<%= list._id %>?_method=PUT">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Enter Title:</label>
+                    <input type="text" name="newlist[title]" value="<%= list.title %>" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Enter description :</label>
+                    <textarea name="newlist[description]" value="<%= list.description %>" class="form-control"> </textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Enter image link :</label>
+                    <input type="text" name="newlist[image]" value="<%= list.image %>" class="form-control">
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-4">
+                        <label for="price" class="form-label">Enter price :</label>
+                        <input type="text" name="newlist[price]" value="<%= list.price %>" class="form-control">
+            
+                    </div>
+                    <div class="mb-3 col-8">
+                        <label for="country" class="form-label">Enter country :</label>
+                        <input type="text" name="newlist[country]" value="<%= list.country %>" class="form-control">
+                    </div>
+
+                </div> 
+                
+                <div class="mb-3">
+                    <label for="location" class="form-label">Enter location :</label>
+                    <input type="text" name="newlist[location]" placeholder="<%= list.location %>" class="form-control">
+                </div>
+                
+                
+                <div class="d-grid gap-2" class="mb-3">
+                    <button class="btn btn-primary" type="submit">submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>

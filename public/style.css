@@ -1,0 +1,70 @@
+body {
+  background-color: aquamarine;
+}
+.navbar {
+  height: 4rem;
+  color: black !important;
+  background-color: white;
+  font-weight: 500px;
+}
+.fa-solid fa-compass {
+  color: red;
+  font-size: 2rem;
+}
+
+.footer-content {
+  height: 8rem;
+  display: flex;
+  background-color: aliceblue;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.footer-socials {
+  display: flex;
+}
+.footer-socials i {
+  margin: 0.4rem;
+  font-size: 20px;
+}
+.footer-links a {
+  text-decoration: none;
+  color: blue;
+}
+.footer-info {
+  width: 100%;
+  text-align: center;
+  font-size: 23px;
+  margin: 0.3rem;
+}
+.card {
+  border: none !important;
+  margin-bottom: 2rem;
+}
+.card-img-top {
+  border-radius: 1rem;
+  width: 100% !important;
+  height: 17rem;
+  object-fit: cover !important;
+  margin-bottom: 0%;
+}
+.card-body {
+  padding: 0%;
+  margin: 0%;
+}
+.list-link {
+  text-decoration: none;
+}
+.card-img-overlay {
+  opacity: 0;
+}
+.card-img-overlay:hover {
+  opacity: 0.4;
+}
+.show-img {
+  height: 50vh;
+  width: 70%;
+}
+.btns {
+  display: flex;
+}
