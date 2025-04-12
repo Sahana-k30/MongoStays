@@ -1,44 +1,62 @@
-<% layout("/layouts/boilerplate") %>
+<%- layout("/layouts/boilerplate") %>
 <body>
     <br><br>
     <h1>Create a new list</h1>
     <div class="row">
         <div class="col-9 offset-2">
-            <form method="POST" action="/listing">
+            <form method="POST" action="/listing" class="needs-validation" novalidate >
                 <div class="mb-3">
                     <label for="title" class="form-label">Enter Title:</label>
-                    <input type="text" name="newlist[title]" placeholder="title" class="form-control">
+                    <input type="text" name="newlist[title]" placeholder="title" class="form-control" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Enter description :</label>
-                    <textarea name="newlist[description]" placeholder="description" class="form-control"> </textarea>
+                    <textarea name="newlist[description]" placeholder="description" class="form-control" required> </textarea>
+                    <div class="invalid-feedback">
+                        description should be valid.
+                    </div>
                 </div>
         
                 <div class="mb-3">
                     <label for="image" class="form-label">Enter image link :</label>
-                    <input type="text" name="newlist[image]" placeholder="image" class="form-control">
+                    <input type="text" name="newlist[image]" placeholder="image" class="form-control" >
+                    <div class="invalid-feedback">
+                        image should be valid.
+                    </div>
                 </div>
                 <div class="row">
                     <div class="mb-3 col-4">
                         <label for="price" class="form-label">Enter price :</label>
-                        <input type="text" name="newlist[price]" placeholder="price" class="form-control">
+                        <input type="text" name="newlist[price]" placeholder="price" class="form-control" required>
+                        <div class="invalid-feedback">
+                            price should be valid.
+                        </div>
             
                     </div>
                     <div class="mb-3 col-8">
                         <label for="country" class="form-label">Enter country :</label>
-                        <input type="text" name="newlist[country]" placeholder="country" class="form-control">
+                        <input type="text" name="newlist[country]" placeholder="country" class="form-control" required>
+                        <div class="invalid-feedback">
+                            country should be valid.
+                        </div>
                     </div>
 
                 </div> 
                 
                 <div class="mb-3">
                     <label for="location" class="form-label">Enter location :</label>
-                    <input type="text" name="newlist[location]" placeholder="location" class="form-control">
+                    <input type="text" name="newlist[location]" placeholder="location" class="form-control" required>
+                    <div class="invalid-feedback">
+                        location should be valid.
+                      </div>
                 </div>
                 
                 
                 <div class="d-grid gap-2" class="mb-3">
-                    <button class="btn btn-primary" type="button">Button</button>
+                    <button class="btn btn-primary" type="submit">submit</button>
                   </div>
             </form>
         </div>
