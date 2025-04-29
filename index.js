@@ -3,10 +3,13 @@ const app=express()
 const mongoose=require("mongoose")
 const methodOverride=require("method-override")
 const listing = require("./models/listing.js");
+const reviews = require("./models/review.js");
 const path=require("path");
 const ejsMate=require("ejs-mate");
 const port=3003;
-const listingSchema=required("./schema.js");
+const listingSchema=require("./schema.js");
+const listings=require("./routes/listings.js");
+const review=require("./routes/reviews.js");
 
 
 app.set("view engine","ejs")
@@ -29,15 +32,15 @@ class expressError extends Error{
         this.message=message;
     }
 }
-
-const validateListing=(req,res,next)=>{
-    let{error}=listingSchema.validate(req.body);
-    if(error){
-        throw new expressError(404,"Enter valid info");
-    } else{
-        next(err);
+const validateListing = (req, res, next) => {
+    let { error } = listingSchema.validate(req.body);
+    if (error) {
+        throw new expressError(404, "Enter valid info");
+    } else {
+        next();  
     }
 }
+
 
 main()
 .then(()=>{
@@ -51,56 +54,16 @@ async function main(){
     mongoose.connect("mongodb://127.0.0.1:27017/airbnb")
 }
 
-app.get("/listing", validateListing,wrapAsync(async (req,res)=>{
-    const allLists = await listing.find({});
-    res.render("home.ejs", { allLists });
-}))
-
-app.get("/listing/new",(req,res)=>{
-    res.render("new.ejs");
-})
-
-app.get("/listing/:id",wrapAsync(async (req,res)=>{
-    const {id}=req.params;
-    const list =await listing.findById(id);
-    res.render("show.ejs",{list});
-}))
-
-app.post("/listing",wrapAsync(async (req,res)=>{
-        const {newlist}=req.body;
-        const newList =new listing(newlist);
-        if(!newList){
-            throw new expressError(400,"invalid data");
-        }
-        await newList.save();
-        res.redirect("/listing");   
-}))
-
-app.get("/listing/:id/edit",wrapAsync(async (req,res)=>{
-    const {id}=req.params;
-    const list=await listing.findById(id);
-    res.render("edit.ejs",{list});
-}))
-
-app.put("/listing/:id",validateListing,wrapAsync(async (req,res)=>{
-    const {id}=req.params;
-    let {newlist}=req.body;
-    await listing.findByIdAndUpdate(id,newlist);
-    res.redirect(`/listing/${id}`)
-}))
-
-app.delete("/listing/:id",wrapAsync(async (req,res)=>{
-    const {id}=req.params;
-    await listing.findByIdAndDelete(id);
-    res.redirect("/listing")
-}))
-
+app.use("/listing",listings);
+app.use("/listing/:id/reviews",review);
 
 app.use((err,req,res,next)=>{
     let{statusCode=500,message="something went wrong"}=err;
 
     res.render("error.ejs",{err})
 })
+
+
 
 app.listen(port,()=>{
     console.log("Server is running successfully");

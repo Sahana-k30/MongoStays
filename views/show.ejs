@@ -3,13 +3,13 @@
     <hr>
     <div class="row">
         <div class="col-8 offset-2">
-            <h1>the listing details </h1>
+            <h1><b><%= list.title %></b></h1>
             <br>
             <div class="card col-6">
                 <img src="<%= list.image %>" class="card-img-top show-img" alt="image">
                 <div class="card-body">
                 <p class="card-text"> 
-                    <b><%= list.title %></b><br>
+                    <br>
                     <%= list.description %><br>
                     <%= list.price %><br>
                     <%= list.location %><br>
@@ -25,7 +25,33 @@
                     <button type="submit" class="btn btn-success offset-4">delete</button>
                 </form>
             </div>
-            <br><br>           
+            <br><br>
+            <hr>
+                <form method="POST" action="/listing/<%= list._id %>/reviews" class="needs-validation" novalidate>
+                    <h2>Reviews form</h2>
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Message/comment: </label>
+                        <textarea col="30" row="10" name=reviews[message] class="form-control" required> </textarea>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <br>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Rating(1-5): </label>
+                        <input type="range" min="1" max="5" name=reviews[rating] required>
+                        <br>
+                    </div>
+                    <button type="submit">Submit</button>
+                    <br><br>
+                </form>  
+                <hr>
+                <h2>All reviews</h2>
+                <ul>
+                    <% for (let review of list.reviews) { %>
+                        <li><%= review.message %></li>
+                    <% } %>
+                </ul>  
         </div>    
     </div>
 </body>
