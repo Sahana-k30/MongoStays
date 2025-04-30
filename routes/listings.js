@@ -1,6 +1,8 @@
 const express=require("express")
 const router=express.Router()
-const listing = require("../models/listing");
+const { listingSchema } = require("../schema.js");
+
+const listing = require("../models/listing.js");
 
 function wrapAsync(fn){
     return function(req,res,next){
@@ -47,6 +49,7 @@ router.post("/", validateListing,wrapAsync(async (req,res)=>{
             throw new expressError(400,"invalid data");
         }
         await newList.save();
+        req.flash("success","new list created successfully")
         res.redirect("/listing");   
 }))
 
@@ -60,12 +63,14 @@ router.put("/:id",validateListing,wrapAsync(async (req,res)=>{
     const {id}=req.params;
     let {newlist}=req.body;
     await listing.findByIdAndUpdate(id,newlist);
+    req.flash("success","List updated successfully");
     res.redirect(`/listing/${id}`)
 }))
 
 router.delete("/:id",wrapAsync(async (req,res)=>{
     const {id}=req.params;
     await listing.findByIdAndDelete(id);
+    req.flash("success","List deleted successfully");
     res.redirect("/listing")
 }))
 

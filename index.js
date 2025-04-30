@@ -10,7 +10,8 @@ const port=3003;
 const listingSchema=require("./schema.js");
 const listings=require("./routes/listings.js");
 const review=require("./routes/reviews.js");
-
+const session=require("express-session");
+const flash=require("connect-flash");
 
 app.set("view engine","ejs")
 app.set("views",path.join(__dirname,"views"))
@@ -41,6 +42,17 @@ const validateListing = (req, res, next) => {
     }
 }
 
+app.use(session({
+    secret: 'mysupersecretcode',
+    resave: false,
+    saveUninitialized: true,
+}))
+app.use(flash());
+
+app.use((req,res,next)=>{
+    res.locals.success=req.flash("success");
+    next();
+})
 
 main()
 .then(()=>{
@@ -62,8 +74,6 @@ app.use((err,req,res,next)=>{
 
     res.render("error.ejs",{err})
 })
-
-
 
 app.listen(port,()=>{
     console.log("Server is running successfully");
