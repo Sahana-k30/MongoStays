@@ -10,6 +10,7 @@
                 <div class="card-body">
                 <p class="card-text"> 
                     <br>
+                    <%= list.owner.userName %>
                     <%= list.description %><br>
                     <%= list.price %><br>
                     <%= list.location %><br>
@@ -17,13 +18,16 @@
                 </p>
                 </div>
             </div>
+
             <div class="btns">
-                <form method="get" action="/listing/<%= list._id %>/edit?_method=put">
-                    <button type="submit" class="btn btn-primary offset-2">edit</button>
-                </form>
-                <form method="post" action="/listing/<%= list._id %>?_method=delete">
-                    <button type="submit" class="btn btn-success offset-4">delete</button>
-                </form>
+                
+                    <form method="get" action="/listing/<%= list._id %>/edit?_method=put">
+                        <button type="submit" class="btn btn-primary offset-2">edit</button>
+                    </form>
+                    <form method="post" action="/listing/<%= list._id %>?_method=delete">
+                        <button type="submit" class="btn btn-success offset-4">delete</button>
+                    </form>
+                
             </div>
             <br><br>
             <hr>

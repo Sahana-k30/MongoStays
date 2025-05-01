@@ -84,6 +84,10 @@ const sampleListings = [
     }
 ];
   
+const listingsWithOwner = sampleListings.map((obj) => ({
+  ...obj,
+  owner: "6811db9177859110de967de8"
+}));
   
 main()
 .then(()=>{
@@ -93,8 +97,9 @@ main()
     console.log(err)
 })
 
-async function main(){
-    mongoose.connect("mongodb://127.0.0.1:27017/airbnb")
+async function main() {
+  await mongoose.connect("mongodb://127.0.0.1:27017/airbnb");
+  await listing.deleteMany({}); // optional: clears old data
+  await listing.insertMany(listingsWithOwner);
+  console.log("Sample listings inserted");
 }
-
-listing.insertMany(sampleListings);

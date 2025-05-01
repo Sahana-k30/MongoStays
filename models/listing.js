@@ -35,6 +35,10 @@ const listSchema = new mongoose.Schema({
     reviews:[{
       type:Schema.Types.ObjectId,
       ref:"reviews"
+    }],
+    owner:[{
+      type:Schema.Types.ObjectId,
+      ref:"User"
     }]
 })
 

@@ -1,5 +1,6 @@
 const express=require("express")
 const router=express.Router()
+const{isLoggedIn,isOwner}=require("../middleware.js")
 const { listingSchema } = require("../schema.js");
 
 const listing = require("../models/listing.js");
@@ -32,13 +33,13 @@ router.get("/",wrapAsync(async (req,res)=>{
     res.render("home.ejs", { allLists });
 }))
 
-router.get("/new",(req,res)=>{
+router.get("/new",isLoggedIn,(req,res)=>{
     res.render("new.ejs");
 })
 
 router.get("/:id",wrapAsync(async (req,res)=>{
     const {id}=req.params;
-    const list =await listing.findById(id).populate("reviews");
+    const list =await listing.findById(id).populate("reviews").populate("owner");
     res.render("show.ejs",{list});
 }))
 
@@ -48,18 +49,19 @@ router.post("/", validateListing,wrapAsync(async (req,res)=>{
         if(!newList){
             throw new expressError(400,"invalid data");
         }
+        newList.owner = req.user._id; 
         await newList.save();
         req.flash("success","new list created successfully")
         res.redirect("/listing");   
 }))
 
-router.get("/:id/edit",wrapAsync(async (req,res)=>{
+router.get("/:id/edit", isLoggedIn,isOwner,wrapAsync(async (req,res)=>{
     const {id}=req.params;
     const list=await listing.findById(id);
     res.render("edit.ejs",{list});
 }))
 
-router.put("/:id",validateListing,wrapAsync(async (req,res)=>{
+router.put("/:id",validateListing,isOwner,wrapAsync(async (req,res)=>{
     const {id}=req.params;
     let {newlist}=req.body;
     await listing.findByIdAndUpdate(id,newlist);
@@ -67,7 +69,7 @@ router.put("/:id",validateListing,wrapAsync(async (req,res)=>{
     res.redirect(`/listing/${id}`)
 }))
 
-router.delete("/:id",wrapAsync(async (req,res)=>{
+router.delete("/:id",isLoggedIn,isOwner,wrapAsync(async (req,res)=>{
     const {id}=req.params;
     await listing.findByIdAndDelete(id);
     req.flash("success","List deleted successfully");

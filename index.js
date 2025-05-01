@@ -2,16 +2,18 @@ const express=require("express")
 const app=express()
 const mongoose=require("mongoose")
 const methodOverride=require("method-override")
-const listing = require("./models/listing.js");
-const reviews = require("./models/review.js");
 const path=require("path");
 const ejsMate=require("ejs-mate");
 const port=3003;
 const listingSchema=require("./schema.js");
 const listings=require("./routes/listings.js");
 const review=require("./routes/reviews.js");
+const Users=require("./routes/users.js");
 const session=require("express-session");
 const flash=require("connect-flash");
+const User = require('./models/users');
+const passport=require("passport")
+const Localstrategy=require("passport-local")   
 
 app.set("view engine","ejs")
 app.set("views",path.join(__dirname,"views"))
@@ -19,6 +21,10 @@ app.use(express.static(path.join(__dirname,"public")))
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"))
 app.engine("ejs",ejsMate);
+
+passport.use(new Localstrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 function wrapAsync(fn){
     return function(req,res,next){
@@ -48,9 +54,12 @@ app.use(session({
     saveUninitialized: true,
 }))
 app.use(flash());
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
+    res.locals.currUser=req.user;
     next();
 })
 
@@ -68,6 +77,7 @@ async function main(){
 
 app.use("/listing",listings);
 app.use("/listing/:id/reviews",review);
+app.use("/",Users);
 
 app.use((err,req,res,next)=>{
     let{statusCode=500,message="something went wrong"}=err;
