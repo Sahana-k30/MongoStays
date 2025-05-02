@@ -12,13 +12,8 @@ const listSchema = new mongoose.Schema({
       required:true
     },
     image:{
-        type:String,
-        default:"https://unsplash.com/photos/a-lone-tree-in-a-field-with-mountains-in-the-background-pefOjha82hw",
-        set:(v)=> 
-          v=== ""
-            ?"https://unsplash.com/photos/a-lone-tree-in-a-field-with-mountains-in-the-background-pefOjha82hw" 
-            : v,
-        required:true    
+        url:String,
+        fname:String,   
     },
     price:{
       type:Number,

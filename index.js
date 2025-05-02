@@ -13,7 +13,10 @@ const session=require("express-session");
 const flash=require("connect-flash");
 const User = require('./models/users');
 const passport=require("passport")
-const Localstrategy=require("passport-local")   
+const Localstrategy=require("passport-local")  
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' }) 
+require('dotenv').config()
 
 app.set("view engine","ejs")
 app.set("views",path.join(__dirname,"views"))

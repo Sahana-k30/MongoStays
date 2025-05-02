@@ -2,8 +2,11 @@ const express=require("express")
 const router=express.Router()
 const{isLoggedIn,isOwner}=require("../middleware.js")
 const { listingSchema } = require("../schema.js");
-
+const controllisting=require("../controllers/listing.js")
 const listing = require("../models/listing.js");
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' }) 
+const storage=require("../cloudconfig.js")
 
 function wrapAsync(fn){
     return function(req,res,next){
@@ -27,54 +30,22 @@ const validateListing = (req, res, next) => {
     }
 }
 
-
-router.get("/",wrapAsync(async (req,res)=>{
-    const allLists = await listing.find({});
-    res.render("home.ejs", { allLists });
-}))
+router.route("/")
+.get(wrapAsync(controllisting.index))
+.post(validateListing,upload.single('newlist[image]'),wrapAsync(controllisting.new))
 
 router.get("/new",isLoggedIn,(req,res)=>{
     res.render("new.ejs");
 })
 
-router.get("/:id",wrapAsync(async (req,res)=>{
-    const {id}=req.params;
-    const list =await listing.findById(id).populate("reviews").populate("owner");
-    res.render("show.ejs",{list});
-}))
+router.get("/:id/edit", isLoggedIn,isOwner,wrapAsync(controllisting.edit))
 
-router.post("/", validateListing,wrapAsync(async (req,res)=>{
-        const {newlist}=req.body;
-        const newList =new listing(newlist);
-        if(!newList){
-            throw new expressError(400,"invalid data");
-        }
-        newList.owner = req.user._id; 
-        await newList.save();
-        req.flash("success","new list created successfully")
-        res.redirect("/listing");   
-}))
 
-router.get("/:id/edit", isLoggedIn,isOwner,wrapAsync(async (req,res)=>{
-    const {id}=req.params;
-    const list=await listing.findById(id);
-    res.render("edit.ejs",{list});
-}))
+router.route("/:id")
+.get(wrapAsync(controllisting.show))
+.put(validateListing,isOwner,wrapAsync(controllisting.update))
+.delete(isLoggedIn,isOwner,wrapAsync(controllisting.delete))
 
-router.put("/:id",validateListing,isOwner,wrapAsync(async (req,res)=>{
-    const {id}=req.params;
-    let {newlist}=req.body;
-    await listing.findByIdAndUpdate(id,newlist);
-    req.flash("success","List updated successfully");
-    res.redirect(`/listing/${id}`)
-}))
-
-router.delete("/:id",isLoggedIn,isOwner,wrapAsync(async (req,res)=>{
-    const {id}=req.params;
-    await listing.findByIdAndDelete(id);
-    req.flash("success","List deleted successfully");
-    res.redirect("/listing")
-}))
 
 module.exports=router;
 
