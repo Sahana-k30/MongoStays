@@ -3,7 +3,7 @@ const router=express.Router()
 const{isLoggedIn,isOwner}=require("../middleware.js")
 const { listingSchema } = require("../schema.js");
 const controllisting=require("../controllers/listing.js")
-const listing = require("../models/listing.js");
+const Listing = require("../models/listing.js");
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' }) 
 const storage=require("../cloudconfig.js")
@@ -43,7 +43,7 @@ router.get("/:id/edit", isLoggedIn,isOwner,wrapAsync(controllisting.edit))
 
 router.route("/:id")
 .get(wrapAsync(controllisting.show))
-.put(validateListing,isOwner,wrapAsync(controllisting.update))
+.put(validateListing,isOwner,upload.single('newlist[image]'),wrapAsync(controllisting.update))
 .delete(isLoggedIn,isOwner,wrapAsync(controllisting.delete))
 
 

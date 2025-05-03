@@ -19,6 +19,8 @@
                 </div>
             </div>
 
+            <input type="hidden" id="location" value="<%= list.location %>">
+            <input type="hidden" id="country" value="<%= list.country %>">
             <div class="btns">
                 
                     <form method="get" action="/listing/<%= list._id %>/edit?_method=put">
@@ -58,5 +60,9 @@
                 </ul>  
         </div>    
     </div>
+    <script>
+        const mapToken = '<%= mapToken %>';
+    </script>
+    <script src="/js/map.js"></script>
 </body>
 

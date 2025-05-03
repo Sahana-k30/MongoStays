@@ -10,6 +10,7 @@ const listings=require("./routes/listings.js");
 const review=require("./routes/reviews.js");
 const Users=require("./routes/users.js");
 const session=require("express-session");
+const MongoStore = require('connect-mongo');
 const flash=require("connect-flash");
 const User = require('./models/users');
 const passport=require("passport")
@@ -51,11 +52,23 @@ const validateListing = (req, res, next) => {
     }
 }
 
+const store=MongoStore.create({ 
+    mongoUrl: 'mongodb+srv://sahanak30may:xqJbuTFMK2lZ4HmR@cluster0.h6jw3v4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+    crypto:{
+        secret: 'keyboard cat',
+    },
+    touchAfter:24*3600
+
+})
+
 app.use(session({
+    store,
     secret: 'mysupersecretcode',
     resave: false,
     saveUninitialized: true,
 }))
+
+
 app.use(flash());
 app.use(passport.initialize())
 app.use(passport.session())
@@ -75,7 +88,7 @@ main()
 })
 
 async function main(){
-    mongoose.connect("mongodb://127.0.0.1:27017/airbnb")
+    mongoose.connect("mongodb+srv://sahanak30may:xqJbuTFMK2lZ4HmR@cluster0.h6jw3v4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 }
 
 app.use("/listing",listings);

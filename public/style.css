@@ -68,3 +68,35 @@ body {
 .btns {
   display: flex;
 }
+
+#map {
+  height: 400px;
+  width: 100%;
+  border-radius: 1rem;
+  margin-top: 1rem;
+}
+
+#filters {
+  display: flex;
+  padding-top: 1rem;
+  flex-wrap: wrap;
+}
+.filter {
+  text-align: center;
+  margin-right: 1.5rem;
+  opacity: 0.6;
+}
+.filter:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+.form-check {
+  border: 2px solid black;
+  padding: 0.5rem;
+  border-radius: 2rem;
+  height: 3rem;
+  margin-left: 3rem;
+}
+.taxtext {
+  display: none;
+}
